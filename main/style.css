@@ -17,6 +17,14 @@
 }
 
 .shooter{
-    background-color: red;
+    background-color: greenyellow;
 
+}
+
+.laser{
+    background-color: black;
+}
+
+.boom{
+    background-color: darkred;
 }
