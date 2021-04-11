@@ -1,0 +1,32 @@
+.grid {
+    width: 900px;
+    height: 900px;
+    border: solid black 1px;
+    display: flex;
+    flex-wrap: wrap;
+    background-image:url("assets/space.jpg");
+}
+
+.grid div {
+    width: 60px;
+    height: 60px;
+}
+
+.invader{
+    content:url("assets/alien.png");
+    border-radius: 10px;
+}
+
+.shooter{
+    content:url("assets/ship_light.png");
+
+}
+
+.laser{
+    content:url("assets/laser.png");
+    size: 1px;
+}
+
+.boom{
+    content:url("assets/aliendead.png");
+}

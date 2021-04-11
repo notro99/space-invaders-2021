@@ -134,4 +134,4 @@ function shoot(e){
     }
 }
 
-document.addEventListener('keydown', shoot)
+document.addEventListener('keyup', shoot)
