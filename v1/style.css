@@ -30,3 +30,27 @@
 .boom{
     content:url("assets/aliendead.png");
 }
+
+#top_list {
+    width: 300px;
+    height: 500px;
+    border-left: 3px solid black;
+    float: right;
+    background-color: lightgray;
+    position: absolute;
+    left: 950px;
+}
+#list {
+    left: 0;
+    font-size: 18px;
+    position: relative;
+    text-align: center;
+}
+
+.gameState{
+    color: greenyellow;
+    font-family: "Agency FB";
+    position: absolute;
+    left: 410px;
+    top: 450px;
+}

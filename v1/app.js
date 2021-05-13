@@ -1,14 +1,16 @@
 const grid = document.querySelector('.grid')
 let shooterPos = 202;
 let width = 15;
-let direction = 1
+let direction = 1;
 let invaderID;
 let goingRight = true;
 let aliensRemoved = [];
 const resultDisplay = document.querySelector('.results')
-let results = 0
-
-
+const gameStateDisplay = document.querySelector('.gameState')
+let results = 0;
+let timeout = 1000;
+var person
+let isGameOn = true;
 for (let i = 0; i < 225; i++) {
     const square = document.createElement('div')
     grid.appendChild(square)
@@ -68,6 +70,7 @@ function alienMove(){
             direction = -1;
             goingRight = false;
         }
+
     }
 
     if(leftSide && !goingRight){
@@ -76,7 +79,12 @@ function alienMove(){
             direction = 1;
             goingRight = true;
         }
+        if(timeout > 300){
+            timeout -= 200;
+        }
     }
+
+
 
     for(let i = 0; i<alien.length; i++){
         alien[i] += direction
@@ -84,26 +92,50 @@ function alienMove(){
     draw()
 
     if (squares[shooterPos].classList.contains('invader', 'shooter')) {
-        resultDisplay.innerHTML = 'GAME OVER'
-        clearInterval(invaderID)
+        gameStateDisplay.innerHTML = 'GAME OVER'
+        endGame()
     }
 
     for (let i = 0; i < alien.length; i++) {
         if(alien[i] > (squares.length)) {
-            resultDisplay.innerHTML = 'GAME OVER'
-            clearInterval(invaderID)
+            gameStateDisplay.innerHTML = 'GAME OVER'
+            endGame()
         }
     }
     if(aliensRemoved.length === alien.length){
-        resultDisplay.innerHTML = 'Nyertél!'
-        clearInterval(invaderID)
+        gameStateDisplay.innerHTML = 'NYERTÉL!'
+        endGame()
     }
-
+    console.log(timeout)
 
 }
+function endGame(){
+    person = prompt("Játékosnév:", "Multimédia user");
+    localStorage.setItem(person, results);
 
-invaderID = setInterval(alienMove, 500)
+   fill_toplist()
 
+    remove()
+    isGameOn = false;
+}
+
+
+
+function start() {
+    if (isGameOn) {
+        setTimeout(function () {
+            alienMove()
+            start();
+        }, timeout);
+    }
+}
+localStorageFill()
+
+start()
+
+
+//invaderID = setInterval(alienMove, 500)
+//console.log("invaderID: "+ invaderID)
 function shoot(e){
     let laserId
     let currentLaserIndex = shooterPos
@@ -126,6 +158,8 @@ function shoot(e){
             results++
             resultDisplay.innerHTML = results;
 
+
+
         }
     }
     switch (e.key) {
@@ -135,3 +169,33 @@ function shoot(e){
 }
 
 document.addEventListener('keyup', shoot)
+
+
+function fill_toplist() {
+    console.log(1)
+    var data = [];
+    for (var i = 0; i < localStorage.length; i++) {
+        data[i] = [localStorage.key(i), parseInt(localStorage.getItem(localStorage.key(i)))];
+    }
+
+    data.sort(function (a, b) {
+        console.log(2)
+        return b[1] - a[1];
+    });
+
+    for (let act_data of data.keys()) {
+        console.log(3)
+        if (act_data < 10) {
+            $('#list').append(data[act_data][0] + ' | ' + data[act_data][1] + '<br><hr>');
+        }
+    }
+}
+
+
+function localStorageFill(){
+    localStorage.setItem("Példa Béla", 23);
+    localStorage.setItem("Ödön", 5 );
+    localStorage.setItem("CreeperSlayer42", 22);
+    localStorage.setItem("Nemadommeganevem", 12 );
+    localStorage.setItem("Ábel", 100);
+}
