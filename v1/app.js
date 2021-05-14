@@ -11,6 +11,10 @@ let results = 0;
 let timeout = 1000;
 var person
 let isGameOn = true;
+let minus=0;
+var laserSound;
+
+
 for (let i = 0; i < 225; i++) {
     const square = document.createElement('div')
     grid.appendChild(square)
@@ -65,28 +69,24 @@ function alienMove(){
     remove()
 
     if(rightEdge && goingRight){
-        for(let i = 0; i <alien.length; i++){
+        for(let i = 0; i < alien.length; i++){
             alien[i] += width+1
             direction = -1;
             goingRight = false;
         }
-
     }
 
     if(leftSide && !goingRight){
-        for(let i = 0; i <alien.length; i++){
+        for(let i = 0; i < alien.length; i++){
             alien[i] += width-1
             direction = 1;
             goingRight = true;
         }
-        if(timeout > 300){
-            timeout -= 200;
-        }
     }
 
 
 
-    for(let i = 0; i<alien.length; i++){
+    for(let i = 0; i< alien.length; i++){
         alien[i] += direction
     }
     draw()
@@ -106,11 +106,11 @@ function alienMove(){
         gameStateDisplay.innerHTML = 'NYERTÉL!'
         endGame()
     }
-    console.log(timeout)
 
 }
 function endGame(){
     person = prompt("Játékosnév:", "Multimédia user");
+    results = results/minus*100;
     localStorage.setItem(person, results);
 
    fill_toplist()
@@ -122,9 +122,11 @@ function endGame(){
 
 
 function start() {
+    laserSound = new Audio("assets/laser.mp3");
     if (isGameOn) {
         setTimeout(function () {
             alienMove()
+            minus++,
             start();
         }, timeout);
     }
@@ -133,10 +135,8 @@ localStorageFill()
 
 start()
 
-
-//invaderID = setInterval(alienMove, 500)
-//console.log("invaderID: "+ invaderID)
 function shoot(e){
+
     let laserId
     let currentLaserIndex = shooterPos
     function moveLaser(){
@@ -156,7 +156,7 @@ function shoot(e){
             const alienRemoved = alien.indexOf(currentLaserIndex)
             aliensRemoved.push(alienRemoved)
             results++
-            resultDisplay.innerHTML = results;
+            resultDisplay.innerHTML = "KIIKTATVA: " + results;
 
 
 
@@ -164,6 +164,7 @@ function shoot(e){
     }
     switch (e.key) {
         case 'ArrowUp':
+            laserSound.play();
             laserId = setInterval(moveLaser,100)
     }
 }
@@ -172,19 +173,19 @@ document.addEventListener('keyup', shoot)
 
 
 function fill_toplist() {
-    console.log(1)
+
     var data = [];
     for (var i = 0; i < localStorage.length; i++) {
         data[i] = [localStorage.key(i), parseInt(localStorage.getItem(localStorage.key(i)))];
     }
 
     data.sort(function (a, b) {
-        console.log(2)
+
         return b[1] - a[1];
     });
 
     for (let act_data of data.keys()) {
-        console.log(3)
+
         if (act_data < 10) {
             $('#list').append(data[act_data][0] + ' | ' + data[act_data][1] + '<br><hr>');
         }
@@ -199,3 +200,9 @@ function localStorageFill(){
     localStorage.setItem("Nemadommeganevem", 12 );
     localStorage.setItem("Ábel", 100);
 }
+
+window.addEventListener("keydown", function(e) {
+    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+}, false);

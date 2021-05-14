@@ -34,11 +34,11 @@
 #top_list {
     width: 300px;
     height: 500px;
-    border-left: 3px solid black;
-    float: right;
-    background-color: lightgray;
     position: absolute;
     left: 950px;
+    background-color: darkslategray;
+    color: floralwhite;
+    font-family: monospace;
 }
 #list {
     left: 0;
@@ -53,4 +53,12 @@
     position: absolute;
     left: 410px;
     top: 450px;
+}
+.results{
+    color: greenyellow;
+    font-family: "Agency FB";
+
+}
+body{
+    background-color: #0a0a0a;
 }
